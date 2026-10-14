@@ -22,7 +22,7 @@ dbutils.widgets.text("uc_catalog", "main")
 dbutils.widgets.text("uc_schema", "default")
 dbutils.widgets.text("uc_model_name", "qwen2_5_0_5b_sft")
 dbutils.widgets.text("model_version", "")
-dbutils.widgets.text("endpoint_name", "qwen-05b-sft")
+dbutils.widgets.text("endpoint_name", "air-cookbook-qwen05b-lora-serving")
 
 version = dbutils.widgets.get("model_version").strip()
 if not version:
@@ -44,7 +44,7 @@ entity = ServedEntityInput(
 
 client = WorkspaceClient()
 try:
-    client.serving_endpoints.get(endpoint_name)
+    existing_endpoint = client.serving_endpoints.get(endpoint_name)
 except ResourceDoesNotExist:
     client.serving_endpoints.create_and_wait(
         name=endpoint_name,
@@ -52,6 +52,13 @@ except ResourceDoesNotExist:
         timeout=timedelta(minutes=40),
     )
 else:
+    served_entities = existing_endpoint.config.served_entities if existing_endpoint.config else []
+    current_models = {served.entity_name for served in (served_entities or [])}
+    if current_models != {registered_name}:
+        raise ValueError(
+            f"Refusing to replace endpoint {endpoint_name}: it serves {current_models}, "
+            f"not only {registered_name}. Choose another endpoint name."
+        )
     client.serving_endpoints.update_config_and_wait(
         name=endpoint_name,
         served_entities=[entity],

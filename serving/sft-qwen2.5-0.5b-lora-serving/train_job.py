@@ -25,7 +25,6 @@ from register import register_model
 from train import main
 
 params = yaml.safe_load(config_path.read_text(encoding="utf-8"))["parameters"]
-params["output_root"] = dbutils.widgets.get("output_root")
 dbutils.widgets.text("uc_catalog", "main")
 dbutils.widgets.text("uc_schema", "default")
 dbutils.widgets.text("uc_model_name", "qwen2_5_0_5b_sft")

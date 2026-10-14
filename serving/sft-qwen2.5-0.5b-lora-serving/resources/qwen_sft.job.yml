@@ -19,7 +19,6 @@ resources:
           notebook_task:
             notebook_path: ../train_job.py
             base_parameters:
-              output_root: ${var.output_root}
               uc_catalog: ${var.catalog}
               uc_schema: ${var.schema}
               uc_model_name: ${var.model_name}
