@@ -1,0 +1,22 @@
+bundle:
+  name: qwen05b-sft-serving
+
+include:
+  - resources/*.yml
+
+variables:
+  output_root:
+    default: /Volumes/main/default/air_examples/sft-qwen2.5-0.5b-lora-serving
+  catalog:
+    default: main
+  schema:
+    default: default
+  model_name:
+    default: qwen2_5_0_5b_sft
+  endpoint_name:
+    default: qwen-05b-sft
+
+targets:
+  dev:
+    default: true
+    mode: development
