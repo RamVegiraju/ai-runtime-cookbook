@@ -1,10 +1,10 @@
 # Fine-tune and serve Qwen2.5-0.5B with AI Runtime
 
-This recipe takes `Qwen/Qwen2.5-0.5B-Instruct` from AI Runtime fine-tuning through managed MLflow and Unity Catalog to [Custom LLM Serving](https://docs.databricks.com/aws/en/machine-learning/model-serving/serve-custom-llms) with vLLM. It trains on 64 `tatsu-lab/alpaca` examples with 16 held out, using one A10 GPU for at most 16 steps or eight minutes of optimization. This is an integration sample, not a large-scale training or accuracy benchmark.
+This recipe takes `Qwen/Qwen2.5-0.5B-Instruct` from AI Runtime fine-tuning through managed MLflow and Unity Catalog to [Custom LLM Serving](https://docs.databricks.com/aws/en/machine-learning/model-serving/serve-custom-llms) with vLLM. It trains on 64 `tatsu-lab/alpaca` examples with 16 held out, using one A10 GPU for at most 16 steps or eight minutes of optimization; it demonstrates the integration rather than large-scale training or an accuracy gain.
 
 ## Before you run
 
-- Use a Databricks CLI with `databricks air` and `databricks bundle`, in an AWS workspace with AI Runtime serverless GPU and Custom LLM Serving. Model logging requires AI v6, MLflow 3.12 or newer, and `databricks-sdk` 0.102.0 or newer.
+- Enable Custom LLM Serving in an AWS workspace with AI Runtime serverless GPU. Model logging requires AI v6, MLflow 3.12 or newer, and `databricks-sdk` 0.102.0 or newer.
 - Set the catalog, schema, model, and endpoint names in `databricks.yml`. You need permission to register Unity Catalog models and create Model Serving endpoints. Each job run creates a model version and creates or updates the endpoint.
 - Ensure the default `/Volumes/main/default/air_examples/sft-qwen2.5-0.5b-lora-serving` is writable, or set another existing volume in both `databricks.yml` and `workload.yaml`.
 - The Alpaca dataset is licensed **CC BY-NC 4.0**. Use data with suitable rights for other purposes.
