@@ -17,7 +17,7 @@ from trl import SFTConfig, SFTTrainer
 
 
 class LossToMlflow(TrainerCallback):
-    """Record Trainer step metrics in AIR's managed MLflow run."""
+    """Record Trainer step metrics in AIR's MLflow run."""
 
     def on_log(self, args, state, control, logs=None, **kwargs):
         if state.is_world_process_zero and logs:
@@ -58,7 +58,7 @@ def main(params: dict | None = None, run_id: str | None = None) -> None:
         run_id = os.environ.pop("MLFLOW_RUN_ID")
     run_dir = output_root / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
-    print(f"Managed MLflow run ID: {run_id}", flush=True)
+    print(f"MLflow run ID: {run_id}", flush=True)
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     if tokenizer.pad_token is None:
@@ -162,7 +162,7 @@ def main(params: dict | None = None, run_id: str | None = None) -> None:
         print(f"Base evaluation loss: {baseline_loss:.4f}", flush=True)
         print(f"Fine-tuned evaluation loss: {eval_loss:.4f}", flush=True)
 
-        # The adapter is small enough to keep as a managed MLflow artifact. The
+        # The adapter is small enough to keep as an MLflow artifact. The
         # full merged weights remain on the volume for custom vLLM serving.
         adapter_dir = run_dir / "lora_adapter"
         trainer.model.save_pretrained(adapter_dir, safe_serialization=True)

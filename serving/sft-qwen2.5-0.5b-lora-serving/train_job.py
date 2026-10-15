@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # Train Qwen2.5-0.5B in a Lakeflow Job
 # MAGIC This notebook reads the same parameters as `databricks air run`, logs to
-# MAGIC managed MLflow, tests the merged model with vLLM, registers it in Unity
+# MAGIC MLflow, tests the merged model with vLLM, registers it in Unity
 # MAGIC Catalog, and passes the registered version to the CPU deployment task.
 # COMMAND ----------
 
