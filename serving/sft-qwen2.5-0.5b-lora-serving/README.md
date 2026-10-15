@@ -9,6 +9,19 @@ This sample shows how to fine-tune and deploy a small language model on Databric
 - Make sure `/Volumes/main/default/air_examples/sft-qwen2.5-0.5b-lora-serving` is writable, or change `output_root` in `workload.yaml` to another existing writable volume.
 - The Alpaca dataset is licensed **CC BY-NC 4.0**. Use data with suitable rights for other purposes.
 
+## Files
+
+| File | What it does |
+| --- | --- |
+| `databricks.yml` | Sets bundle resource names and includes the job definition. |
+| `resources/qwen_sft.job.yml` | Defines the GPU training task and the dependent CPU deployment task. |
+| `workload.yaml` | Configures direct AI Runtime runs; the job also reads its training parameters. |
+| `train.py` | Fine-tunes with LoRA, compares held-out loss, logs to MLflow, and saves the adapter and merged weights. |
+| `train_job.py` | Runs training in the Lakeflow Job, registers the model, and passes its version to deployment. |
+| `register.py` | Tests the merged weights with vLLM, packages them with MLflow, and registers the model in Unity Catalog. |
+| `deploy.py` | Creates the endpoint, or updates it if it serves the same model, then sends a sample request. |
+| `README.md` | Explains setup, commands, and results. |
+
 ## Run
 
 From this directory, choose a configured CLI profile and run the Lakeflow Job:
@@ -19,7 +32,7 @@ databricks bundle deploy -t dev --profile <PROFILE>
 databricks bundle run qwen_sft -t dev --profile <PROFILE>
 ```
 
-`databricks.yml` sets the resource names and includes `resources/qwen_sft.job.yml`, which defines the two Lakeflow tasks. `databricks bundle deploy` uploads the recipe files and creates or updates the job; `databricks bundle run` starts it. The GPU task reads `workload.yaml`, trains and tests the merged model with vLLM, then registers it; the CPU task deploys that version and sends a sample request to the endpoint.
+`databricks bundle deploy` uploads these files and creates or updates the job. `databricks bundle run` starts GPU training and registration, followed by CPU deployment and a sample endpoint request.
 
 To run only the training step with the AI Runtime CLI:
 
