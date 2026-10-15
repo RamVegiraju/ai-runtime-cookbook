@@ -1,6 +1,6 @@
 # Fine-tune and serve Qwen2.5-0.5B with AI Runtime
 
-Fine-tune `Qwen/Qwen2.5-0.5B-Instruct` on one A10 GPU, track it with managed MLflow, register it in Unity Catalog, and deploy it with vLLM on [Custom LLM Serving](https://docs.databricks.com/aws/en/machine-learning/model-serving/serve-custom-llms). This small example uses 64 Alpaca training examples and 16 held-out examples to show the workflow, not an accuracy gain.
+This sample shows how to fine-tune and deploy a small language model on Databricks. We fine-tune `Qwen/Qwen2.5-0.5B-Instruct` on one A10 GPU with AI Runtime, track it with managed MLflow, register it in Unity Catalog, and deploy it with vLLM on a [Custom LLM Serving endpoint](https://docs.databricks.com/aws/en/machine-learning/model-serving/serve-custom-llms). The 64 Alpaca training examples and 16 held-out examples demonstrate the workflow. For a more realistic use case, use task-specific data and evaluate the fine-tuned model against the base model on representative held-out prompts.
 
 ## Before you run
 
@@ -19,7 +19,7 @@ databricks bundle deploy -t dev --profile <PROFILE>
 databricks bundle run qwen_sft -t dev --profile <PROFILE>
 ```
 
-`databricks.yml` sets the resource names and includes `resources/qwen_sft.job.yml`, which defines the two tasks. `databricks bundle deploy` uploads the recipe files and creates or updates the job; `databricks bundle run` starts it. The GPU task reads `workload.yaml`, trains and tests the merged model with vLLM, then registers it; the CPU task deploys that version and sends a sample request.
+`databricks.yml` sets the resource names and includes `resources/qwen_sft.job.yml`, which defines the two Lakeflow tasks. `databricks bundle deploy` uploads the recipe files and creates or updates the job; `databricks bundle run` starts it. The GPU task reads `workload.yaml`, trains and tests the merged model with vLLM, then registers it; the CPU task deploys that version and sends a sample request to the endpoint.
 
 To run only the training step with the AI Runtime CLI:
 
