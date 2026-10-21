@@ -1,0 +1,18 @@
+bundle:
+  name: qwen05b-sft-registration
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    default: main
+  schema:
+    default: default
+  model_name:
+    default: qwen2_5_0_5b_sft
+
+targets:
+  dev:
+    default: true
+    mode: development
